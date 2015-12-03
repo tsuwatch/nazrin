@@ -104,7 +104,6 @@ module Nazrin
     end
 
     def search
-      p @parameters
       @client.search(@parameters)
     end
 

@@ -17,7 +17,7 @@ module Nazrin
         if @client.parameters[:size] && @client.parameters[:start]
           round_correct_page
 
-          Nazrin.paginate_array(
+          Nazrin.paginated_array(
             collections,
             current_page: @current_page,
             per_page: @client.parameters[:size],

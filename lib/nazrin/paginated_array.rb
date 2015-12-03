@@ -31,7 +31,7 @@ module Nazrin
 
     # next page number in the collections
     def next_page
-      current_page - 1 unless last_page? || out_of_bounds?
+      current_page + 1 unless last_page? || out_of_bounds?
     end
 
     # out of bounds of the collections?
