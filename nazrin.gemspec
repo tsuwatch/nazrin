@@ -9,8 +9,8 @@ Gem::Specification.new do |spec|
   spec.authors       = ['Tomohiro Suwa']
   spec.email         = ['neoen.gsn@gmail.com']
 
-  spec.summary       = %q{Amazon CloudSearch client}
-  spec.description   = %q{Amazon CloudSearch client}
+  spec.summary       = 'Amazon CloudSearch client'
+  spec.description   = 'Amazon CloudSearch client'
   spec.homepage      = 'https://github.com/tsuwatch/nazrin'
   spec.license       = 'MIT'
 
@@ -19,9 +19,11 @@ Gem::Specification.new do |spec|
 
   spec.add_dependency 'activesupport'
   spec.add_dependency 'activerecord'
-  spec.add_dependency 'kaminari'
   spec.add_dependency 'aws-sdk', '~> 2'
 
   spec.add_development_dependency 'bundler', '~> 1.9'
   spec.add_development_dependency 'rake', '~> 10.0'
+  spec.add_development_dependency 'rubocop'
+  spec.add_development_dependency 'kaminari'
+  spec.add_development_dependency 'rspec'
 end

@@ -50,18 +50,17 @@ module Nazrin
         if over_max_limit_request?
           if total_count > MAX_LIMIT
             @current_page = @last_page = get_last_page(MAX_LIMIT)
-            @client.start(get_start_position(@current_page))
           else
             @current_page = @last_page = get_last_page(total_count)
-            @client.start(get_start_position(@current_page))
           end
+          @client.start(get_start_position(@current_page))
         elsif res.data.hits.found > 0 && !res.data.hits.hit.present?
           @current_page = @last_page = get_last_page(total_count)
           @client.start(get_start_position(@current_page))
         else
           @current_page = (
             @client.parameters[:start] / @client.parameters[:size].to_f
-          ).ceil + 1 if @client.parameters[:start].present?
+          ).ceil + 1
           @last_page = get_last_page(total_count)
         end
       end
