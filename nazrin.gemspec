@@ -9,8 +9,8 @@ Gem::Specification.new do |spec|
   spec.authors       = ['Tomohiro Suwa']
   spec.email         = ['neoen.gsn@gmail.com']
 
-  spec.summary       = 'Amazon CloudSearch client'
-  spec.description   = 'Amazon CloudSearch client'
+  spec.summary       = 'Nazrin is a Amazon CloudSearch client'
+  spec.description   = 'Nazrin is a Amazon CloudSearch client'
   spec.homepage      = 'https://github.com/tsuwatch/nazrin'
   spec.license       = 'MIT'
 
