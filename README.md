@@ -1,4 +1,5 @@
 # Nazrin
+[![Gem Version](https://badge.fury.io/rb/nazrin.svg)](https://badge.fury.io/rb/nazrin)
 [![Build Status](https://travis-ci.org/tsuwatch/nazrin.svg?branch=master)](https://travis-ci.org/tsuwatch/nazrin)
 [![Coverage Status](https://coveralls.io/repos/tsuwatch/nazrin/badge.svg?branch=readme&service=github)](https://coveralls.io/github/tsuwatch/nazrin?branch=readme)
 [![Code Climate](https://codeclimate.com/github/tsuwatch/nazrin/badges/gpa.svg)](https://codeclimate.com/github/tsuwatch/nazrin)
