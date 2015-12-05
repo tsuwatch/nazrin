@@ -1,8 +1,11 @@
 # Nazrin
+[![Build Status](https://travis-ci.org/tsuwatch/nazrin.svg?branch=master)](https://travis-ci.org/tsuwatch/nazrin)
+[![Coverage Status](https://coveralls.io/repos/tsuwatch/nazrin/badge.svg?branch=readme&service=github)](https://coveralls.io/github/tsuwatch/nazrin?branch=readme)
+[![Code Climate](https://codeclimate.com/github/tsuwatch/nazrin/badges/gpa.svg)](https://codeclimate.com/github/tsuwatch/nazrin)
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/nazrin`. To experiment with that code, run `bin/console` for an interactive prompt.
+Nazrin is a Ruby wrapper for Amazon CloudSearch, with optional ActiveRecord support for easy integration with your Rails application.
 
-TODO: Delete this and the text above, and describe your gem
+*Nazrin has the ability of the extent which find what you're looking for...*
 
 ## Installation
 
@@ -22,7 +25,41 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+### in Ruby on Rails
+
+```ruby
+$ bundle exec rails g nazrin:config
+
+Nazrin.config do |config|
+  config.debug_mode = false
+  config.search_endpoint = ''
+  config.document_endpoint = ''
+  config.region = ''
+  config.access_key_id = ''
+  config.secret_access_key = ''
+  # currently support kaminari gem
+  config.pagination = 'kaminari'
+end
+```
+
+```ruby
+class Post
+  include Nazrin::ActiveRecord::Searchable
+
+  searchable do
+    fields [:content]
+    field(:created_at) { created_at.utc.iso8601 }
+  end
+
+  after_create :update_in_index
+  after_destroy :delete_from_index
+end
+```
+
+```ruby
+Post.search.size(1).start(0).query("(and 'content')").query_parser('structured').execute
+=> [#<Post id: 1, content: "content">]
+```
 
 ## Development
 
