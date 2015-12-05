@@ -4,7 +4,7 @@
 [![Coverage Status](https://coveralls.io/repos/tsuwatch/nazrin/badge.svg?branch=readme&service=github)](https://coveralls.io/github/tsuwatch/nazrin?branch=readme)
 [![Code Climate](https://codeclimate.com/github/tsuwatch/nazrin/badges/gpa.svg)](https://codeclimate.com/github/tsuwatch/nazrin)
 
-Nazrin is a Ruby wrapper for Amazon CloudSearch, with optional ActiveRecord support for easy integration with your Rails application.
+Nazrin is a Ruby wrapper for Amazon CloudSearch (aws-sdk), with optional ActiveRecord support for easy integration with your Rails application.
 
 *Nazrin has the ability of the extent which find what you're looking for...*
 
