@@ -31,7 +31,7 @@ Or install it yourself as:
 ```ruby
 $ bundle exec rails g nazrin:config
 
-Nazrin.config do |config|
+Nazrin.configure do |config|
   config.debug_mode = false
   config.search_endpoint = ''
   config.document_endpoint = ''
@@ -44,7 +44,7 @@ end
 ```
 
 ```ruby
-class Post
+class Post < Activerecord::Base
   include Nazrin::ActiveRecord::Searchable
 
   searchable do
@@ -52,7 +52,8 @@ class Post
     field(:created_at) { created_at.utc.iso8601 }
   end
 
-  after_create :update_in_index
+  after_create :add_to_index
+  after_update :update_in_index
   after_destroy :delete_from_index
 end
 ```
