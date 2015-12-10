@@ -44,7 +44,7 @@ end
 ```
 
 ```ruby
-class Post < Activerecord::Base
+class Post < ActiveRecord::Base
   include Nazrin::ActiveRecord::Searchable
 
   searchable do
