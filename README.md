@@ -59,7 +59,7 @@ end
 ```
 
 ```ruby
-Post.search.size(1).start(0).query("(and 'content')").query_parser('structured').execute
+Post.search(where: :foo, includes: :bar).size(1).start(0).query("(and 'content')").query_parser('structured').execute
 => [#<Post id: 1, content: "content">]
 ```
 
