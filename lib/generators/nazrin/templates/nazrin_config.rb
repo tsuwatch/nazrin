@@ -5,6 +5,6 @@ Nazrin.configure do |config|
   config.region = ''
   config.access_key_id = ''
   config.secret_access_key = ''
-  # currently support kaminari
-  # config.pagination = 'kaminari'
+  # currently support 'kaminari', 'will_paginate' or 'nazrin'
+  config.pagination = 'kaminari'
 end

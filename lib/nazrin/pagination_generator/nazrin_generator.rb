@@ -1,7 +1,7 @@
 module Nazrin
   module PaginationGenerator
     module NazrinGenerator
-      def self.call(collection, options = {})
+      def self.call(collection, options)
         Nazrin::PaginatedArray.new(
           collection,
           options[:current_page],
