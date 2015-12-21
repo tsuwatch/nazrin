@@ -1,5 +1,9 @@
 module Nazrin
+  class SearchClientError < StandardError; end
+
   class SearchClient
+    CLOUD_SEARCH_MAX_LIMIT = 10_000
+
     attr_accessor :data_accessor
     attr_reader :parameters
 
@@ -104,6 +108,7 @@ module Nazrin
     end
 
     def search
+      fail SearchClientError if deep_page?
       @client.search(@parameters)
     end
 
@@ -113,6 +118,19 @@ module Nazrin
       else
         search
       end
+    end
+
+    private
+
+    def deep_page?
+      if parameters[:start].present? && parameters[:size].present?
+        return true if parameters[:start] + parameters[:size] > CLOUD_SEARCH_MAX_LIMIT
+      elsif parameters[:start].present?
+        return true if parameters[:start] > CLOUD_SEARCH_MAX_LIMIT
+      elsif parameters[:size].present?
+        return true if parameters[:size] > CLOUD_SEARCH_MAX_LIMIT
+      end
+      false
     end
   end
 end
