@@ -8,6 +8,7 @@ module Nazrin
     attr_reader :parameters
 
     def initialize
+      # @see http://docs.aws.amazon.com/sdkforruby/api/Aws/CloudSearchDomain/Client.html aws-sdk
       @client = Aws::CloudSearchDomain::Client.new(
         endpoint: Nazrin.config.search_endpoint,
         region: Nazrin.config.region,
