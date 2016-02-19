@@ -11,7 +11,7 @@ module Nazrin
         @client = client
 
         res = @client.search
-        collection = load_all(res.data.hits.hit.map(&:id))
+        collection = load_all(res.data.hits.hit.map{|x| if x.id.include?(".") then x.id.split(".")[1] else x.id end })
 
         if @client.parameters[:size] && @client.parameters[:start]
           total_count = res.data.hits.found
