@@ -6,7 +6,7 @@
 
 Nazrin is a Ruby wrapper for Amazon CloudSearch (aws-sdk), with optional ActiveRecord support for easy integration with your Rails application.
 
-*Nazrin has the ability of the extent which find what you're looking for...*
+>*Nazrin has the ability of the extent which find what you're looking for...*
 
 ## Installation
 
