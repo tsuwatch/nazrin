@@ -3,12 +3,9 @@ $LOAD_PATH.unshift File.expand_path('../../lib', __FILE__)
 require 'coveralls'
 Coveralls.wear!
 
-require 'kaminari'
 require 'aws-sdk'
 require 'active_record'
 require 'nazrin'
-
-Kaminari::Hooks.init
 
 Nazrin.configure do |config|
   config.debug_mode = false
@@ -17,7 +14,6 @@ Nazrin.configure do |config|
   config.region = :region
   config.access_key_id = :access_key_id
   config.secret_access_key = :secret_access_key
-  config.pagination = 'kaminari'
 end
 
 class FakeResponse

@@ -38,8 +38,6 @@ Nazrin.configure do |config|
   config.region = ''
   config.access_key_id = ''
   config.secret_access_key = ''
-  # currently support 'kaminari', 'will_paginate' or 'nazrin'
-  config.pagination = 'kaminari'
 end
 ```
 
@@ -61,11 +59,6 @@ end
 ```ruby
 Post.search(where: :foo, includes: :bar).size(1).start(0).query("(and 'content')").query_parser('structured').execute
 => [#<Post id: 1, content: "content">]
-```
-
-If you want to use other pagination gem, in your Gemfile
-```ruby
-gem 'kaminari' # or 'will_paginate'
 ```
 
 ## Development

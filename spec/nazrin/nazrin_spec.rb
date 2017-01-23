@@ -9,6 +9,5 @@ describe Nazrin do
     it { expect(config.region).to eq :region }
     it { expect(config.access_key_id).to eq :access_key_id }
     it { expect(config.secret_access_key).to eq :secret_access_key }
-    it { expect(config.pagination).to eq 'kaminari' }
   end
 end
