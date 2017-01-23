@@ -1,3 +1,5 @@
+require 'active_support/concern'
+
 module Nazrin
   module ActiveRecord
     module Searchable
