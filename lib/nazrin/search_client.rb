@@ -109,11 +109,13 @@ module Nazrin
     end
 
     def search
+      return fake_response if Nazrin.config.mode == 'sandbox'
       fail SearchClientError if deep_page?
       @client.search(@parameters)
     end
 
     def execute
+      return fake_response if Nazrin.config.mode == 'sandbox'
       if data_accessor
         data_accessor.results(self)
       else
@@ -132,6 +134,10 @@ module Nazrin
         return true if parameters[:size] > CLOUD_SEARCH_MAX_LIMIT
       end
       false
+    end
+
+    def fake_response
+      Nazrin::PaginationGenerator.generate([], { current_page: 1, per_page: 1, total_count: 0 })
     end
   end
 end

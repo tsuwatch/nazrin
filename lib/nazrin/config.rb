@@ -12,6 +12,7 @@ module Nazrin
   class Configuration
     include ActiveSupport::Configurable
     config_accessor :debug_mode
+    config_accessor :mode
     config_accessor :search_endpoint
     config_accessor :document_endpoint
     config_accessor :region

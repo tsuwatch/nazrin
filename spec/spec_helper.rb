@@ -9,6 +9,7 @@ require 'nazrin'
 
 Nazrin.configure do |config|
   config.debug_mode = false
+  config.mode = 'production'
   config.search_endpoint = 'http://search'
   config.document_endpoint = 'http://document'
   config.region = :region
