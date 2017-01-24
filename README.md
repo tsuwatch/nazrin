@@ -33,6 +33,7 @@ $ bundle exec rails g nazrin:config # execute before including nazrin to model
 
 Nazrin.configure do |config|
   config.debug_mode = false
+  config.mode = 'production'
   config.search_endpoint = ''
   config.document_endpoint = ''
   config.region = ''
@@ -71,6 +72,16 @@ gem 'nazrin-kaminari'
 Currently supported libraries
 
 - kaminari: [nazrin-kaminari](https://github.com/tsuwatch/nazrin-kaminari)
+
+### Sandbox mode
+
+When there is no instance for development and you don't want to request to CloudSearch
+
+```ruby
+Nazrion.config.mode = 'sandbox'
+```
+
+"sandbox" mode where it does nothing with any requests and just returns an empty collection for any searches.
 
 ## Development
 

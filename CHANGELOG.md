@@ -1,3 +1,13 @@
+## 2.1.0 (Next)
+
+### Breaking changes:
+
+* Deprecated `Nazrin.config.debug_mode` [#11](https://github.com/tsuwatch/nazrin/pull/11)
+
+### Features:
+
+* Implement sandbox mode [#11](https://github.com/tsuwatch/nazrin/pull/11)
+
 ## [2.0.0](https://github.com/tsuwatch/nazrin/compare/v2.0.0.rc1...v2.0.0)
 
 ### Fixes:

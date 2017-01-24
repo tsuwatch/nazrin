@@ -4,6 +4,7 @@ describe Nazrin do
   describe 'configure' do
     let(:config) { Nazrin.config }
     it { expect(config.debug_mode).to be false }
+    it { expect(config.mode).to eq 'sandbox' }
     it { expect(config.search_endpoint).to eq 'http://search' }
     it { expect(config.document_endpoint).to eq 'http://document' }
     it { expect(config.region).to eq :region }

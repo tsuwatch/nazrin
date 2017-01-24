@@ -1,5 +1,5 @@
 Nazrin.configure do |config|
-  config.debug_mode = false
+  config.mode = :production # or sandbox (It does nothing with any requests to CloudSearch)
   config.search_endpoint = ''
   config.document_endpoint = ''
   config.region = ''
