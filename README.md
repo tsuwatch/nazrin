@@ -61,6 +61,17 @@ Post.search(where: :foo, includes: :bar).size(1).start(0).query("(and 'content')
 => [#<Post id: 1, content: "content">]
 ```
 
+### Supported pagination libraries
+If you want to use other supported pagination libraries, for example, `nazrin-kaminari` generates `Kaminari::PaginatableArray` instead of `Nazrin::PaginatedArray`.
+
+```ruby
+gem 'nazrin-kaminari'
+```
+
+Currently supported libraries
+
+- kaminari: [nazrin-kaminari](https://github.com/tsuwatch/nazrin-kaminari)
+
 ## Development
 
 After checking out the repo, run `bin/setup` to install dependencies. Then, run `bin/console` for an interactive prompt that will allow you to experiment.
