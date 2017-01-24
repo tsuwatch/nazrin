@@ -1,4 +1,4 @@
-## 2.1.0 (Next)
+## [2.1.0](https://github.com/tsuwatch/nazrin/compare/v2.0.0...v2.1.0)
 
 ### Breaking changes:
 
