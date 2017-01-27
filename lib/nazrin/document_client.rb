@@ -12,7 +12,7 @@ module Nazrin
 
     def add_document(id, field_data)
       ActiveSupport::Deprecation.warn 'config.debug_mode is deprecated. Use config.mode = \'sandbox\' instead.' and return nil if Nazrin.config.debug_mode
-      return nil if Nazrin.config.mode = 'sandbox'
+      return nil if Nazrin.config.mode == 'sandbox'
       client.upload_documents(
         documents: [
           {
@@ -26,7 +26,7 @@ module Nazrin
 
     def delete_document(id)
       ActiveSupport::Deprecation.warn 'config.debug_mode is deprecated. Use config.mode = \'sandbox\' instead.' and return nil if Nazrin.config.debug_mode
-      return nil if Nazrin.config.mode = 'sandbox'
+      return nil if Nazrin.config.mode == 'sandbox'
       client.upload_documents(
         documents: [
           {
