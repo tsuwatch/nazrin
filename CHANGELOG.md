@@ -1,3 +1,9 @@
+## [2.1.1](https://github.com/tsuwatch/nazrin/compare/v2.1.0...v2.1.1)
+
+### Fixes:
+
+* Fix a bug where unintended assignmenting in conditional statement [#12](https://github.com/tsuwatch/nazrin/pull/12)
+
 ## [2.1.0](https://github.com/tsuwatch/nazrin/compare/v2.0.0...v2.1.0)
 
 ### Breaking changes:
