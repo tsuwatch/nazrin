@@ -1,3 +1,5 @@
+require 'aws-sdk'
+
 require 'nazrin/active_record/searchable'
 require 'nazrin/active_record/data_accessor'
 require 'nazrin/config'
