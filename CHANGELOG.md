@@ -1,3 +1,9 @@
+## [2.1.2](https://github.com/tsuwatch/nazrin/compare/v2.1.1...v2.1.2)
+
+### Fixes:
+
+* Require aws-sdk gem in nazrin [#14](https://github.com/tsuwatch/nazrin/pull/14)
+
 ## [2.1.1](https://github.com/tsuwatch/nazrin/compare/v2.1.0...v2.1.1)
 
 ### Fixes:
