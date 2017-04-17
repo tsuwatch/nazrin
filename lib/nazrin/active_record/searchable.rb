@@ -79,7 +79,7 @@ module Nazrin
 
         def nazrin_add_document(obj)
           nazrin_doc_client.add_document(
-            obj.send(:id), nazrin_eval_field_data(obj))
+            nazrin_get_document_id(obj), nazrin_eval_field_data(obj))
         end
 
         def nazrin_update_document(obj)
@@ -87,7 +87,11 @@ module Nazrin
         end
 
         def nazrin_delete_document(obj)
-          nazrin_doc_client.delete_document(obj.send(:id))
+          nazrin_doc_client.delete_document(nazrin_get_document_id(obj))
+        end
+
+        def nazrin_get_document_id(obj)
+          obj.class.to_s + "." + obj.send(:id).to_s
         end
       end
     end
