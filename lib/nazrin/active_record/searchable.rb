@@ -40,10 +40,11 @@ module Nazrin
           client
         end
 
-        def nazrin_searchable(&block)
+        def nazrin_searchable(key=:id, &block)
           class_variable_set(
             :@@nazrin_doc_client,
             Nazrin::DocumentClient.new)
+          class_variable_set(:@@nazrin_doc_id, key)
           class_variable_set(:@@nazrin_search_field_data, {})
           block.call
         end
@@ -79,7 +80,7 @@ module Nazrin
 
         def nazrin_add_document(obj)
           nazrin_doc_client.add_document(
-            obj.send(:id), nazrin_eval_field_data(obj))
+            obj.send(class_variable_get(:@@nazrin_doc_id)), nazrin_eval_field_data(obj))
         end
 
         def nazrin_update_document(obj)
@@ -87,7 +88,7 @@ module Nazrin
         end
 
         def nazrin_delete_document(obj)
-          nazrin_doc_client.delete_document(obj.send(:id))
+          nazrin_doc_client.delete_document(obj.send(class_variable_get(:@@nazrin_doc_id)))
         end
       end
     end

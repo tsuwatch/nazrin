@@ -29,12 +29,13 @@ module Nazrin
 
       # load from activerecord
       def load_all(ids)
+        key = @model.class_eval { class_variable_get(:@@nazrin_doc_id) }
         records_table = {}
         @options.each do |k, v|
           @model = @model.send(k, v)
         end
-        @model.where(id: ids).each do |record|
-          records_table[record.id] = record
+        @model.where("#{key} in (?)", ids).each do |record|
+          records_table[record.send("#{key}")] = record
         end
         ids.map do |id|
           records_table.select { |k, _| k == id.to_i }[id.to_i]
