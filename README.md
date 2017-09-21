@@ -66,6 +66,7 @@ Post.search(where: :foo, includes: :bar).size(1).start(0).query("(and 'content')
 If you want to use other supported pagination libraries, for example, `nazrin-kaminari` generates `Kaminari::PaginatableArray` instead of `Nazrin::PaginatedArray`.
 
 ```ruby
+gem 'nazrin'
 gem 'nazrin-kaminari'
 ```
 

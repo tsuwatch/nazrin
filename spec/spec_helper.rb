@@ -3,7 +3,6 @@ $LOAD_PATH.unshift File.expand_path('../../lib', __FILE__)
 require 'coveralls'
 Coveralls.wear!
 
-require 'aws-sdk'
 require 'active_record'
 require 'nazrin'
 
@@ -44,7 +43,7 @@ ActiveRecord::Base.establish_connection(
   database: ':memory:')
 
 class Post < ActiveRecord::Base
-  include Nazrin::ActiveRecord::Searchable
+  include Nazrin::Searchable
 
   searchable do
     fields [:content]
