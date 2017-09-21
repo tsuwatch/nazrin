@@ -3,7 +3,7 @@ require 'spec_helper'
 describe Nazrin::SearchClient do
   let(:search_client) { described_class.new }
 
-  before { search_client.data_accessor = Nazrin::ActiveRecord::DataAccessor.new(Post, {}) }
+  before { search_client.data_accessor = Nazrin::DataAccessor::ActiveRecord.new(Post, {}) }
 
   it { expect(search_client).to be_respond_to :parameters }
   it { expect(search_client).to be_respond_to :data_accessor }

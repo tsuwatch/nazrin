@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Nazrin::ActiveRecord::Searchable do
+describe Nazrin::Searchable do
   let!(:post) { Post.create(content: 'content', created_at: Time.now) }
 
   it { expect(Post).to be_respond_to :search }
@@ -14,7 +14,7 @@ describe Nazrin::ActiveRecord::Searchable do
     before { allow_any_instance_of(Nazrin::SearchClient).to receive(:search).and_return(FakeResponse.new) }
 
     it { expect(Post.search.is_a?(Nazrin::SearchClient)).to eq true }
-    it { expect(Post.search.data_accessor.is_a?(Nazrin::ActiveRecord::DataAccessor)).to eq true }
+    it { expect(Post.search.data_accessor.is_a?(Nazrin::DataAccessor::ActiveRecord)).to eq true }
 
     it { expect(Post.search.size(1).start(0).execute).to eq [post] }
   end
