@@ -29,6 +29,9 @@ module Nazrin
         if defined?(::ActiveRecord::Base) && clazz.ancestors.include?(::ActiveRecord::Base)
           require 'nazrin/data_accessor/active_record'
           return Nazrin::DataAccessor::ActiveRecord
+        elsif defined?(::Mongoid::Document) && clazz.ancestors.include?(::Mongoid::Document)
+          require 'nazrin/data_accessor/mongoid'
+          return Nazrin::DataAccessor::Mongoid
         end
         nil
       end
