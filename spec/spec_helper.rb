@@ -4,6 +4,7 @@ require 'coveralls'
 Coveralls.wear!
 
 require 'active_record'
+require 'mongoid'
 require 'nazrin'
 
 Nazrin.configure do |config|
@@ -17,6 +18,12 @@ Nazrin.configure do |config|
 end
 
 class FakeResponse
+  attr_accessor :id
+
+  def initialize(id = 1)
+    self.id = id
+  end
+
   def data
     self
   end
@@ -27,10 +34,6 @@ class FakeResponse
 
   def hit
     [self]
-  end
-
-  def id
-    1
   end
 
   def found
@@ -51,6 +54,17 @@ class Post < ActiveRecord::Base
   end
 end
 
+ENV['MONGOID_ENV'] = 'test'
+Mongoid.load!('./spec/config/mongoid.yml')
+
+class User
+  include Mongoid::Document
+  include Nazrin::Searchable
+
+  field :email, type: String
+  field :created_at, type: DateTime
+end
+
 ActiveRecord::Migration.verbose = false
 ActiveRecord::Migrator.migrate File.expand_path('../db/migrate', __FILE__), nil
 
@@ -68,5 +82,6 @@ RSpec.configure do |config|
 
   config.after(:each) do
     DatabaseCleaner.clean
+    Mongoid.purge!
   end
 end
