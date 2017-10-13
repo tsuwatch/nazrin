@@ -1,3 +1,13 @@
+## [2.2.0](https://github.com/tsuwatch/nazrin/compare/v2.1.2...v2.2.0)
+
+### Breaking changes:
+
+* Include `Nazrin::Searchable` instead of `Nazrin::ActiveRecord::Searchable` [#19](https://github.com/tsuwatch/nazrin/pull/19)
+
+### Features:
+
+* Support Mongoid [#17](https://github.com/tsuwatch/nazrin/pull/17) [#20](https://github.com/tsuwatch/nazrin/pull/20) - [@yefim](https://github.com/yefim)
+
 ## [2.1.2](https://github.com/tsuwatch/nazrin/compare/v2.1.1...v2.1.2)
 
 ### Fixes:
