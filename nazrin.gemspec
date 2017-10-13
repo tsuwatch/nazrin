@@ -10,7 +10,7 @@ Gem::Specification.new do |spec|
   spec.email         = ['neoen.gsn@gmail.com']
 
   spec.summary       = 'Ruby wrapper for Amazon CloudSearch (aws-sdk)'
-  spec.description   = 'Ruby wrapper for Amazon CloudSearch (aws-sdk), with optional ActiveRecord support for easy integration with your Rails application'
+  spec.description   = 'Ruby wrapper for Amazon CloudSearch (aws-sdk), with ActiveRecord, Mongoid support for easy integration with your Rails application'
   spec.homepage      = 'https://github.com/tsuwatch/nazrin'
   spec.license       = 'MIT'
 
