@@ -10,8 +10,8 @@ require 'nazrin'
 Nazrin.configure do |config|
   config.debug_mode = false
   config.mode = 'production'
-  config.search_endpoint = 'http://search'
-  config.document_endpoint = 'http://document'
+  config.search_endpoint = 'http://search.com'
+  config.document_endpoint = 'http://document.com'
   config.region = :region
   config.access_key_id = :access_key_id
   config.secret_access_key = :secret_access_key

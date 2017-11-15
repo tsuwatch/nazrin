@@ -17,7 +17,8 @@ Gem::Specification.new do |spec|
   spec.files         = `git ls-files -z`.split("\x0").reject { |f| f.match(%r{^(test|spec|features)/}) }
   spec.require_paths = ['lib']
 
-  spec.add_dependency 'aws-sdk', '~> 2'
+  spec.add_dependency 'aws-sdk-core', '~> 3'
+  spec.add_dependency 'aws-sdk-cloudsearchdomain', '~> 1.0'
   spec.add_dependency 'activesupport', '>= 4.0.0'
 
   spec.add_development_dependency 'bundler', '~> 1.9'
