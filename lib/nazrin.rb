@@ -1,4 +1,4 @@
-require 'aws-sdk'
+require 'aws-sdk-cloudsearchdomain'
 
 require 'nazrin/searchable'
 require 'nazrin/data_accessor'
