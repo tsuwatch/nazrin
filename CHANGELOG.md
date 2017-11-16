@@ -1,3 +1,9 @@
+## [2.3.0](https://github.com/tsuwatch/nazrin/compare/v2.2.0...v2.3.0)
+
+### Features:
+
+* Dropped support for `aws-sdk` v2 [#22](https://github.com/tsuwatch/nazrin/pull/22)
+
 ## [2.2.0](https://github.com/tsuwatch/nazrin/compare/v2.1.2...v2.2.0)
 
 ### Breaking changes:
