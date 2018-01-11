@@ -7,13 +7,13 @@ module Nazrin
     attr_accessor :data_accessor
     attr_reader :parameters
 
-    def initialize
+    def initialize(config=Nazrin.config)
       # @see http://docs.aws.amazon.com/sdkforruby/api/Aws/CloudSearchDomain/Client.html aws-sdk
       @client = Aws::CloudSearchDomain::Client.new(
-        endpoint: Nazrin.config.search_endpoint,
-        region: Nazrin.config.region,
-        access_key_id: Nazrin.config.access_key_id,
-        secret_access_key: Nazrin.config.secret_access_key)
+        endpoint: config.search_endpoint,
+        region: config.region,
+        access_key_id: config.access_key_id,
+        secret_access_key: config.secret_access_key)
       @parameters = {}
     end
 

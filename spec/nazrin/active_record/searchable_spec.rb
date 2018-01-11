@@ -18,4 +18,29 @@ describe Nazrin::Searchable do
 
     it { expect(Post.search.size(1).start(0).execute).to eq [post] }
   end
+
+  describe '#search_configure' do
+    before do
+      allow_any_instance_of(Nazrin::SearchClient).to receive(:search).and_return(FakeResponse.new)
+      Post.class_eval do
+        searchable_configure do |config|
+          config.search_endpoint = 'http://override-search.com'
+          config.document_endpoint = 'http://override-document.com'
+        end
+      end
+    end
+
+    after { Post.instance_variable_set('@nazrin_searchable_config', nil) }
+
+    it 'overrides Post search endpoint' do
+      expect(Aws::CloudSearchDomain::Client).to receive(:new).with(hash_including({endpoint: 'http://override-search.com'}))
+      Post.search
+    end
+
+    it 'does not override User search endpoint' do
+      expect(Aws::CloudSearchDomain::Client).to receive(:new).with(hash_including({endpoint: 'http://search.com'}))
+      User.search
+    end
+
+  end
 end

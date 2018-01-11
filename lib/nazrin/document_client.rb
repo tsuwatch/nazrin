@@ -2,12 +2,12 @@ module Nazrin
   class DocumentClient
     attr_reader :client
 
-    def initialize
+    def initialize(config=Nazrin.config)
       @client = Aws::CloudSearchDomain::Client.new(
-        endpoint: Nazrin.config.document_endpoint,
-        region: Nazrin.config.region,
-        access_key_id: Nazrin.config.access_key_id,
-        secret_access_key: Nazrin.config.secret_access_key)
+        endpoint: config.document_endpoint,
+        region: config.region,
+        access_key_id: config.access_key_id,
+        secret_access_key: config.secret_access_key)
     end
 
     def add_document(id, field_data)

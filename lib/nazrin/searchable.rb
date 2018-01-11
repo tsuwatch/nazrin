@@ -29,11 +29,12 @@ module Nazrin
           alias_method :searchable, :nazrin_searchable unless method_defined? :searchable
           alias_method :fields, :nazrin_fields unless method_defined? :fields
           alias_method :field, :nazrin_field unless method_defined? :field
+          alias_method :searchable_configure, :nazrin_searchable_configure unless method_defined? :searchable_configure
         end
       end
 
       def nazrin_search(options = {})
-        client = Nazrin::SearchClient.new
+        client = Nazrin::SearchClient.new(nazrin_searchable_config)
         client.data_accessor = Nazrin::DataAccessor.for(self).new(self, options)
         client
       end
@@ -41,7 +42,7 @@ module Nazrin
       def nazrin_searchable(&block)
         class_variable_set(
           :@@nazrin_doc_client,
-          Nazrin::DocumentClient.new)
+          Nazrin::DocumentClient.new(nazrin_searchable_config))
         class_variable_set(:@@nazrin_search_field_data, {})
         block.call
       end
@@ -86,6 +87,14 @@ module Nazrin
 
       def nazrin_delete_document(obj)
         nazrin_doc_client.delete_document(obj.send(:id))
+      end
+
+      def nazrin_searchable_config
+        @nazrin_searchable_config ||= Nazrin::Searchable::Configuration.new
+      end
+
+      def nazrin_searchable_configure
+        yield nazrin_searchable_config
       end
     end
   end
