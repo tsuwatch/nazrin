@@ -1,6 +1,7 @@
 require 'aws-sdk-cloudsearchdomain'
 
 require 'nazrin/searchable'
+require 'nazrin/searchable/config'
 require 'nazrin/data_accessor'
 require 'nazrin/config'
 require 'nazrin/search_client'
