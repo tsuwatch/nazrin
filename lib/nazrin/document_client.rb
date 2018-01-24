@@ -7,7 +7,8 @@ module Nazrin
         endpoint: config.document_endpoint,
         region: config.region,
         access_key_id: config.access_key_id,
-        secret_access_key: config.secret_access_key)
+        secret_access_key: config.secret_access_key,
+        logger: config.logger)
     end
 
     def add_document(id, field_data)

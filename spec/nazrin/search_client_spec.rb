@@ -5,8 +5,18 @@ describe Nazrin::SearchClient do
 
   before { search_client.data_accessor = Nazrin::DataAccessor::ActiveRecord.new(Post, {}) }
 
+  it { expect(search_client).to be_respond_to :client }
   it { expect(search_client).to be_respond_to :parameters }
   it { expect(search_client).to be_respond_to :data_accessor }
+
+  context 'with logger configured' do
+    let(:logger) { instance_double(Logger) }
+    before { Nazrin.config.logger = logger }
+    after { Nazrin.config.logger = nil }
+    it 'sets the client logger' do
+      expect(described_class.new.client.config.logger).to eq(logger)
+    end
+  end
 
   describe '#execute' do
     before { allow_any_instance_of(Aws::CloudSearchDomain::Client).to receive(:search).and_return(FakeResponse.new) }
