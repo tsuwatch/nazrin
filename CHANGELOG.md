@@ -1,3 +1,11 @@
+## [2.4.0](https://github.com/tsuwatch/nazrin/compare/v2.3.0...v2.4.0)
+
+### Features:
+
+* Support multile domains [#23](https://github.com/tsuwatch/nazrin/pull/23) - [@totem3](https://github.com/totem3)
+
+* Allow logger setting of Aws::CloudSearchDomain::Client [#24](https://github.com/tsuwatch/nazrin/pull/24) - [@AMHOL](https://github.com/AMHOL)
+
 ## [2.3.0](https://github.com/tsuwatch/nazrin/compare/v2.2.0...v2.3.0)
 
 ### Features:
