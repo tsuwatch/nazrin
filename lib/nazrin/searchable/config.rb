@@ -7,6 +7,7 @@ module Nazrin
         region
         access_key_id
         secret_access_key
+        logger
       ).each do |attr|
         class_eval <<-CODE, __FILE__, __LINE__ + 1
           def #{attr}

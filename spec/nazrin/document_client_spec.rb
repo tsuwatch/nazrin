@@ -10,4 +10,13 @@ describe Nazrin::DocumentClient do
     it { expect(document_client.add_document(1, {})).to eq nil }
     it { expect(document_client.delete_document(1)).to eq nil }
   end
+
+  context 'with logger configured' do
+    let(:logger) { instance_double(Logger) }
+    before { Nazrin.config.logger = logger }
+    after { Nazrin.config.logger = nil }
+    it 'sets the client logger' do
+      expect(document_client.client.config.logger).to eq(logger)
+    end
+  end
 end
