@@ -39,12 +39,19 @@ Nazrin.configure do |config|
   config.region = ''
   config.access_key_id = ''
   config.secret_access_key = ''
+  config.logger = nil
 end
 ```
 
 ```ruby
 class Post < ActiveRecord::Base
   include Nazrin::Searchable
+
+  # You can override settings
+  searchable_configure do |config|
+    config.search_endpoint = 'http://example.com/override-search-endpoint'
+    config.document_endpoint = 'http://example.com/override-document-endpoint'
+  end
 
   searchable do
     fields [:content]
