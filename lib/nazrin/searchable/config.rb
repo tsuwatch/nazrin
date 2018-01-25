@@ -1,6 +1,8 @@
 module Nazrin
   module Searchable
     class Configuration
+      attr_accessor :domain_name
+
       %i(
         search_endpoint
         document_endpoint

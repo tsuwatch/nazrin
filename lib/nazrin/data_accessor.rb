@@ -26,7 +26,11 @@ module Nazrin
 
       def accessor_for(clazz)
         return nil if clazz.name.nil? || clazz.name.empty?
-        if defined?(::ActiveRecord::Base) && clazz.ancestors.include?(::ActiveRecord::Base)
+
+        if clazz.respond_to?(:nazrin_searchable_config) && clazz.nazrin_searchable_config.domain_name
+          require 'nazrin/data_accessor/struct'
+          return Nazrin::DataAccessor::Struct[clazz.nazrin_searchable_config]
+        elsif defined?(::ActiveRecord::Base) && clazz.ancestors.include?(::ActiveRecord::Base)
           require 'nazrin/data_accessor/active_record'
           return Nazrin::DataAccessor::ActiveRecord
         elsif defined?(::Mongoid::Document) && clazz.ancestors.include?(::Mongoid::Document)
@@ -45,26 +49,29 @@ module Nazrin
       end
     end
 
+    attr_reader :model
+    attr_reader :options
+
     def initialize(model, options)
       @model = model
       @options = options
     end
 
     def results(client)
-      @client = client
+      res = client.search
+      collection = load_all(data_from_response(res))
+      start = client.parameters[:start]
+      size = client.parameters[:size]
 
-      res = @client.search
-      collection = load_all(res.data.hits.hit.map(&:id))
-
-      if @client.parameters[:size] && @client.parameters[:start]
+      if size && start
         total_count = res.data.hits.found
 
         Nazrin::PaginationGenerator.generate(
           collection,
-          current_page: current_page,
-          per_page: @client.parameters[:size],
+          current_page: current_page(start, size),
+          per_page: size,
           total_count: total_count,
-          last_page: last_page(total_count))
+          last_page: last_page(size, total_count))
       else
         collection
       end
@@ -74,14 +81,18 @@ module Nazrin
       raise NotImplementedError
     end
 
-    private
-
-    def last_page(total_count)
-      (total_count / @client.parameters[:size].to_f).ceil
+    def data_from_response
+      raise NotImplementedError
     end
 
-    def current_page
-      (@client.parameters[:start] / @client.parameters[:size].to_f).ceil + 1
+    private
+
+    def last_page(size, total_count)
+      (total_count / size.to_f).ceil
+    end
+
+    def current_page(start, size)
+      (start / size.to_f).ceil + 1
     end
   end
 end
