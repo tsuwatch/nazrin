@@ -42,9 +42,39 @@ describe Nazrin::Searchable do
               }
             ]
           }
-        }
+        },
+        facets: facets
       )
     end
+    let(:facets) do
+      {
+        'tags' => {
+          'buckets' => [
+            {
+              'value' => 'one',
+              'count' => 1
+            },
+            {
+              'value' => 'two',
+              'count' => 1
+            },
+            {
+              'value' => 'three',
+              'count' => 1
+            },
+            {
+              'value' => 'four',
+              'count' => 1
+            },
+            {
+              'value' => 'five',
+              'count' => 1
+            }
+          ]
+        }
+      }
+    end
+
     before do
       allow(data_accessor).to receive(:field_types).and_return(
         'id' => 'int',
@@ -71,5 +101,6 @@ describe Nazrin::Searchable do
         'tags' => ['four', 'five']
       )
     end
+    it { expect(result.facets).to eq(facets) }
   end
 end

@@ -1,3 +1,5 @@
+require 'nazrin/result'
+
 module Nazrin
   class DataAccessor
     class NoAccessorError < StandardError; end
@@ -66,15 +68,20 @@ module Nazrin
       if size && start
         total_count = res.data.hits.found
 
-        Nazrin::PaginationGenerator.generate(
+        records = Nazrin::PaginationGenerator.generate(
           collection,
           current_page: current_page(start, size),
           per_page: size,
           total_count: total_count,
           last_page: last_page(size, total_count))
       else
-        collection
+        records = collection
       end
+
+      Result.new(
+        records,
+        res.facets
+      )
     end
 
     def load_all

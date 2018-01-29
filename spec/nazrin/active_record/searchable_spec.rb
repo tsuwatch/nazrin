@@ -11,12 +11,22 @@ describe Nazrin::Searchable do
   it { expect(post).to be_respond_to :delete_from_index }
 
   describe '#search' do
-    before { allow_any_instance_of(Nazrin::SearchClient).to receive(:search).and_return(FakeResponse.new) }
+    let(:response) { FakeResponse.new }
+    before { allow_any_instance_of(Nazrin::SearchClient).to receive(:search).and_return(response) }
 
     it { expect(Post.search.is_a?(Nazrin::SearchClient)).to eq true }
     it { expect(Post.search.data_accessor.is_a?(Nazrin::DataAccessor::ActiveRecord)).to eq true }
 
-    it { expect(Post.search.size(1).start(0).execute).to eq [post] }
+    context 'without facets' do
+      it { expect(Post.search.size(1).start(0).execute).to eq [post] }
+      it { expect(Post.search.size(1).start(0).execute.facets).to be_nil }
+    end
+
+    context 'with facets' do
+      let(:response) { FakeResponseWithFacets.new }
+      it { expect(Post.search.size(1).start(0).execute).to eq [post] }
+      it { expect(Post.search.size(1).start(0).execute.facets).to eq(response.facets) }
+    end
   end
 
   describe '#search_configure' do
