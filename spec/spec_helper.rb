@@ -39,6 +39,25 @@ class FakeResponse
   def found
     1
   end
+
+  def facets
+    nil
+  end
+end
+
+class FakeResponseWithFacets < FakeResponse
+  def facets
+    {
+      'status' => {
+        'buckets' => [
+          {
+            'value' => 'active',
+            'count' => 1
+          }
+        ]
+      }
+    }
+  end
 end
 
 ActiveRecord::Base.establish_connection(

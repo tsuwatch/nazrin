@@ -6,10 +6,21 @@ describe Nazrin::DataAccessor::Mongoid do
   it { expect(User).to be_respond_to :search }
 
   describe '#search' do
+    let(:response) { FakeResponse.new(user._id.to_s) }
+
     before do
-      allow_any_instance_of(Nazrin::SearchClient).to receive(:search).and_return(FakeResponse.new(user._id.to_s))
+      allow_any_instance_of(Nazrin::SearchClient).to receive(:search).and_return(response)
     end
 
-    it { expect(User.search.size(1).start(0).execute).to eq [user] }
+    context 'without facets' do
+      it { expect(User.search.size(1).start(0).execute).to eq [user] }
+      it { expect(User.search.size(1).start(0).execute.facets).to be_nil }
+    end
+
+    context 'with facets' do
+      let(:response) { FakeResponseWithFacets.new(user._id.to_s) }
+      it { expect(User.search.size(1).start(0).execute).to eq [user] }
+      it { expect(User.search.size(1).start(0).execute.facets).to eq(response.facets) }
+    end
   end
 end

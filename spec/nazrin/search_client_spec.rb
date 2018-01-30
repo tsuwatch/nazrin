@@ -28,7 +28,7 @@ describe Nazrin::SearchClient do
 
     context 'config.mode = \'production\'' do
       before { Nazrin.config.mode = 'production' }
-      it { expect(search_client.execute.is_a?(Array)).to eq true }
+      it { expect(search_client.execute.is_a?(Nazrin::PaginatedArray)).to eq false }
     end
   end
 
