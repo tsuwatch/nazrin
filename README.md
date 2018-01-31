@@ -51,6 +51,10 @@ class Post < ActiveRecord::Base
   searchable_configure do |config|
     config.search_endpoint = 'http://example.com/override-search-endpoint'
     config.document_endpoint = 'http://example.com/override-document-endpoint'
+
+    # If you set domain_name, CloudSearch data using index_fields configured for the search domain is loaded, not a database.
+    # So you can use nazrin for plain object
+    config.domain_name = 'my-cloudsearch-domain-name'
   end
 
   searchable do
@@ -65,8 +69,11 @@ end
 ```
 
 ```ruby
-Post.search(where: :foo, includes: :bar).size(1).start(0).query("(and 'content')").query_parser('structured').execute
+result = Post.search(where: :foo, includes: :bar).size(1).start(0).query("(and 'content')").query_parser('structured').execute
 => [#<Post id: 1, content: "content">]
+# You can access facets
+result.facets
+=> {}
 ```
 
 ### Supported pagination libraries

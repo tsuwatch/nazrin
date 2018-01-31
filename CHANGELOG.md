@@ -1,3 +1,11 @@
+## [2.5.0](https://github.com/tsuwatch/nazrin/compare/v2.4.0...v2.5.0)
+
+### Features:
+
+* CloudSearch data also available [#25](https://github.com/tsuwatch/nazrin/pull/25) - [@AMHOL](https://github.com/AMHOL)
+
+* Enable accessing facets [#26](https://github.com/tsuwatch/nazrin/pull/26) - [@AMHOL](https://github.com/AMHOL)
+
 ## [2.4.0](https://github.com/tsuwatch/nazrin/compare/v2.3.0...v2.4.0)
 
 ### Features:
