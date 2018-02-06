@@ -81,6 +81,22 @@ module Nazrin
           obj.send(:id), nazrin_eval_field_data(obj))
       end
 
+      def nazrin_batch_operation(type_objects_mapping)
+        operations = type_objects_mapping.each_with_object({}) do |(type, objects), hash|
+          if type.to_sym == :add
+            hash[:add] = objects.map do |obj|
+              [obj.send(:id), nazrin_eval_field_data(obj)]
+            end
+          else
+            hash[:delete] = objects.map do |obj|
+              obj.send(:id)
+            end
+          end
+        end
+
+        nazrin_doc_client.batch(operations)
+      end
+
       def nazrin_update_document(obj)
         nazrin_add_document(obj)
       end
