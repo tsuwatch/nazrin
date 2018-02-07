@@ -31,41 +31,58 @@ describe Nazrin::Searchable do
       end
     end
 
-    subject do
-      Post.nazrin_batch_operation(
-        add: [post, other_post],
-        delete: [deleted_post]
-      )
+    context 'when all operations valid' do
+      subject do
+        Post.nazrin_batch_operation(
+          add: [post, other_post],
+          delete: [deleted_post]
+        )
+      end
+
+      it do
+        expect(domain_client).to receive(:upload_documents).with(
+          documents: [
+            {
+              type: 'add',
+              id: post.id,
+              fields: {
+                content: post.content,
+                created_at: post.created_at.utc.iso8601
+              }
+            },
+            {
+              type: 'add',
+              id: other_post.id,
+              fields: {
+                content: other_post.content,
+                created_at: other_post.created_at.utc.iso8601
+              }
+            },
+            {
+              type: 'delete',
+              id: deleted_post.id
+            }
+          ].to_json,
+          content_type: 'application/json'
+        )
+
+        subject
+      end
     end
 
-    it do
-      expect(domain_client).to receive(:upload_documents).with(
-        documents: [
-          {
-            type: 'add',
-            id: post.id,
-            fields: {
-              content: post.content,
-              created_at: post.created_at.utc.iso8601
-            }
-          },
-          {
-            type: 'add',
-            id: other_post.id,
-            fields: {
-              content: other_post.content,
-              created_at: other_post.created_at.utc.iso8601
-            }
-          },
-          {
-            type: 'delete',
-            id: deleted_post.id
-          }
-        ].to_json,
-        content_type: 'application/json'
-      )
+    context 'with invalid operations' do
+      subject do
+        Post.nazrin_batch_operation(
+          add: [post, other_post],
+          invalid: [deleted_post]
+        )
+      end
 
-      subject
+      it do
+        expect { subject }.to raise_error(
+          Nazrin::Searchable::InvalidBatchOperationError
+        )
+      end
     end
   end
 

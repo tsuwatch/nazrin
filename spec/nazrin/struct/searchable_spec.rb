@@ -58,41 +58,58 @@ describe Nazrin::Searchable do
       end
     end
 
-    subject do
-      clazz.nazrin_batch_operation(
-        add: [added_struct_1, added_struct_2],
-        delete: [deleted_struct_1]
-      )
+    context 'when all operations valid' do
+      subject do
+        clazz.nazrin_batch_operation(
+          add: [added_struct_1, added_struct_2],
+          delete: [deleted_struct_1]
+        )
+      end
+
+      it do
+        expect(domain_client).to receive(:upload_documents).with(
+          documents: [
+            {
+              type: 'add',
+              id: added_struct_1.id,
+              fields: {
+                content: added_struct_1.content,
+                created_at: added_struct_1.created_at.utc.iso8601
+              }
+            },
+            {
+              type: 'add',
+              id: added_struct_2.id,
+              fields: {
+                content: added_struct_2.content,
+                created_at: added_struct_2.created_at.utc.iso8601
+              }
+            },
+            {
+              type: 'delete',
+              id: deleted_struct_1.id
+            }
+          ].to_json,
+          content_type: 'application/json'
+        )
+
+        subject
+      end
     end
 
-    it do
-      expect(domain_client).to receive(:upload_documents).with(
-        documents: [
-          {
-            type: 'add',
-            id: added_struct_1.id,
-            fields: {
-              content: added_struct_1.content,
-              created_at: added_struct_1.created_at.utc.iso8601
-            }
-          },
-          {
-            type: 'add',
-            id: added_struct_2.id,
-            fields: {
-              content: added_struct_2.content,
-              created_at: added_struct_2.created_at.utc.iso8601
-            }
-          },
-          {
-            type: 'delete',
-            id: deleted_struct_1.id
-          }
-        ].to_json,
-        content_type: 'application/json'
-      )
+    context 'with invalid operations' do
+      subject do
+        clazz.nazrin_batch_operation(
+          add: [added_struct_1, added_struct_2],
+          invalid: [deleted_struct_1]
+        )
+      end
 
-      subject
+      it do
+        expect { subject }.to raise_error(
+          Nazrin::Searchable::InvalidBatchOperationError
+        )
+      end
     end
   end
 

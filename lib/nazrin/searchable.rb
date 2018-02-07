@@ -2,6 +2,8 @@ require 'active_support/concern'
 
 module Nazrin
   module Searchable
+    class InvalidBatchOperationError < StandardError; end
+
     extend ActiveSupport::Concern
 
     included do
@@ -27,6 +29,7 @@ module Nazrin
         class << base
           alias_method :search, :nazrin_search unless method_defined? :search
           alias_method :searchable, :nazrin_searchable unless method_defined? :searchable
+          alias_method :batch_operation, :nazrin_batch_operation unless method_defined? :batch_operation
           alias_method :fields, :nazrin_fields unless method_defined? :fields
           alias_method :field, :nazrin_field unless method_defined? :field
           alias_method :searchable_configure, :nazrin_searchable_configure unless method_defined? :searchable_configure
@@ -45,6 +48,28 @@ module Nazrin
           Nazrin::DocumentClient.new(nazrin_searchable_config))
         class_variable_set(:@@nazrin_search_field_data, {})
         block.call
+      end
+
+      def nazrin_batch_operation(type_objects_mapping)
+        operations = type_objects_mapping.each_with_object({}) do |(type, objects), hash|
+          case type.to_sym
+          when :add, :create
+            hash[:add] = objects.map do |obj|
+              [obj.send(:id), nazrin_eval_field_data(obj)]
+            end
+          when :delete, :destroy
+            hash[:delete] = objects.map do |obj|
+              obj.send(:id)
+            end
+          else
+            raise(
+              InvalidBatchOperationError,
+              "`#{type}` is not a valid batch operation"
+            )
+          end
+        end
+
+        nazrin_doc_client.batch(operations)
       end
 
       def nazrin_fields(fields)
@@ -79,22 +104,6 @@ module Nazrin
       def nazrin_add_document(obj)
         nazrin_doc_client.add_document(
           obj.send(:id), nazrin_eval_field_data(obj))
-      end
-
-      def nazrin_batch_operation(type_objects_mapping)
-        operations = type_objects_mapping.each_with_object({}) do |(type, objects), hash|
-          if type.to_sym == :add
-            hash[:add] = objects.map do |obj|
-              [obj.send(:id), nazrin_eval_field_data(obj)]
-            end
-          else
-            hash[:delete] = objects.map do |obj|
-              obj.send(:id)
-            end
-          end
-        end
-
-        nazrin_doc_client.batch(operations)
       end
 
       def nazrin_update_document(obj)

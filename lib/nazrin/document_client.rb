@@ -1,5 +1,7 @@
 module Nazrin
   class DocumentClient
+    class InvalidBatchOperationError < StandardError; end
+
     attr_reader :client
 
     def initialize(config=Nazrin.config)
@@ -43,7 +45,8 @@ module Nazrin
       return nil if Nazrin.config.mode == 'sandbox'
 
       documents = operations.each_with_object([]) do |(type, tuple), arr|
-        if type.to_sym == :add
+        case type.to_sym
+        when :add, :create
           tuple.each do |id, field_data|
             arr.push(
               type: 'add',
@@ -51,13 +54,18 @@ module Nazrin
               fields: field_data
             )
           end
-        else
+        when :delete, :destroy
           tuple.map do |id|
             arr.push(
               type: 'delete',
               id: id
             )
           end
+        else
+          raise(
+            InvalidBatchOperationError,
+            "`#{type}` is not a valid batch operation"
+          )
         end
       end
 
