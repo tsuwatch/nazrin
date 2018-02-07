@@ -55,7 +55,7 @@ module Nazrin
             )
           end
         when :delete, :destroy
-          tuple.map do |id|
+          tuple.each do |id|
             arr.push(
               type: 'delete',
               id: id
