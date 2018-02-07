@@ -1,5 +1,7 @@
 module Nazrin
   class DocumentClient
+    class InvalidBatchOperationError < StandardError; end
+
     attr_reader :client
 
     def initialize(config=Nazrin.config)
@@ -36,6 +38,41 @@ module Nazrin
           }
         ].to_json,
         content_type: 'application/json')
+    end
+
+    def batch(operations)
+      ActiveSupport::Deprecation.warn 'config.debug_mode is deprecated. Use config.mode = \'sandbox\' instead.' and return nil if Nazrin.config.debug_mode
+      return nil if Nazrin.config.mode == 'sandbox'
+
+      documents = operations.each_with_object([]) do |(type, tuple), arr|
+        case type.to_sym
+        when :add
+          tuple.each do |id, field_data|
+            arr.push(
+              type: 'add',
+              id: id,
+              fields: field_data
+            )
+          end
+        when :delete
+          tuple.each do |id|
+            arr.push(
+              type: 'delete',
+              id: id
+            )
+          end
+        else
+          raise(
+            InvalidBatchOperationError,
+            "`#{type}` is not a valid batch operation"
+          )
+        end
+      end
+
+      client.upload_documents(
+        documents: documents.to_json,
+        content_type: 'application/json'
+      )
     end
   end
 end
