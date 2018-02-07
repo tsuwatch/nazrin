@@ -53,11 +53,11 @@ module Nazrin
       def nazrin_batch_operation(type_objects_mapping)
         operations = type_objects_mapping.each_with_object({}) do |(type, objects), hash|
           case type.to_sym
-          when :add, :create
+          when :add
             hash[:add] = objects.map do |obj|
               [obj.send(:id), nazrin_eval_field_data(obj)]
             end
-          when :delete, :destroy
+          when :delete
             hash[:delete] = objects.map do |obj|
               obj.send(:id)
             end

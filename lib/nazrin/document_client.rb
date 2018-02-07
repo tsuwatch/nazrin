@@ -46,7 +46,7 @@ module Nazrin
 
       documents = operations.each_with_object([]) do |(type, tuple), arr|
         case type.to_sym
-        when :add, :create
+        when :add
           tuple.each do |id, field_data|
             arr.push(
               type: 'add',
@@ -54,7 +54,7 @@ module Nazrin
               fields: field_data
             )
           end
-        when :delete, :destroy
+        when :delete
           tuple.each do |id|
             arr.push(
               type: 'delete',
