@@ -1,3 +1,9 @@
+## [2.6.0](https://github.com/tsuwatch/nazrin/compare/v2.5.0...v2.6.0)
+
+### Features:
+
+* Implement batch operation [#27](https://github.com/tsuwatch/nazrin/pull/27) - [@AMHOL](https://github.com/AMHOL)
+
 ## [2.5.0](https://github.com/tsuwatch/nazrin/compare/v2.4.0...v2.5.0)
 
 ### Features:
