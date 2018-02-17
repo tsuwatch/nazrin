@@ -68,6 +68,7 @@ class Post < ActiveRecord::Base
 end
 ```
 
+### `.search`
 ```ruby
 result = Post.search(where: :foo, includes: :bar).size(1).start(0).query("(and 'content')").query_parser('structured').execute
 => [#<Post id: 1, content: "content">]
@@ -75,6 +76,20 @@ result = Post.search(where: :foo, includes: :bar).size(1).start(0).query("(and '
 result.facets
 => {}
 ```
+
+### `.batch_operation`
+```ruby
+post1 = Post.create
+post2 = Post.create
+post3 = Post.create
+post3.destroy
+
+Post.batch_operation(
+  add: [post1, post2],
+  delete: [post3]
+)
+```
+
 
 ### Supported pagination libraries
 If you want to use other supported pagination libraries, for example, `nazrin-kaminari` generates `Kaminari::PaginatableArray` instead of `Nazrin::PaginatedArray`.
