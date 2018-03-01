@@ -60,7 +60,9 @@ module Nazrin
 
       def data_from_response(res)
         res.data[:hits][:hit].map do |hit|
-          self.class.transform_attributes(hit[:fields])
+          self.class.transform_attributes(
+            { 'id' => hit[:id] }.merge(hit[:fields] || {})
+          )
         end
       end
     end

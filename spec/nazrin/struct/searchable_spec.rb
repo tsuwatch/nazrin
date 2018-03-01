@@ -117,31 +117,6 @@ describe Nazrin::Searchable do
     let(:result) do
       clazz.search.query_parser('structured').query('matchall').execute
     end
-    let(:fake_response) do
-      double(
-        data: {
-          hits: {
-            hit: [
-              {
-                fields: {
-                  'id' => ['1'],
-                  'name' => ['Michael'],
-                  'tags' => ['one', 'two', 'three']
-                }
-              },
-              {
-                fields: {
-                  'id' => ['2'],
-                  'name' => ['Florence'],
-                  'tags' => ['four', 'five']
-                }
-              }
-            ]
-          }
-        },
-        facets: facets
-      )
-    end
     let(:facets) do
       {
         'tags' => {
@@ -182,21 +157,83 @@ describe Nazrin::Searchable do
       )
     end
 
-    it { expect(result.length).to eq(2) }
-    it do
-      expect(result[0].attributes).to eq(
-        'id' => '1',
-        'name' => 'Michael',
-        'tags' => ['one', 'two', 'three']
-      )
+    context 'with fields requested' do
+      let(:fake_response) do
+        double(
+          data: {
+            hits: {
+              hit: [
+                {
+                  id: '1',
+                  fields: {
+                    'name' => ['Michael'],
+                    'tags' => ['one', 'two', 'three']
+                  }
+                },
+                {
+                  id: '2',
+                  fields: {
+                    'name' => ['Florence'],
+                    'tags' => ['four', 'five']
+                  }
+                }
+              ]
+            }
+          },
+          facets: facets
+        )
+      end
+
+      it { expect(result.length).to eq(2) }
+      it do
+        expect(result[0].attributes).to eq(
+          'id' => '1',
+          'name' => 'Michael',
+          'tags' => ['one', 'two', 'three']
+        )
+      end
+      it do
+        expect(result[1].attributes).to eq(
+          'id' => '2',
+          'name' => 'Florence',
+          'tags' => ['four', 'five']
+        )
+      end
+      it { expect(result.facets).to eq(facets) }
     end
-    it do
-      expect(result[1].attributes).to eq(
-        'id' => '2',
-        'name' => 'Florence',
-        'tags' => ['four', 'five']
-      )
+
+    context 'with no fields requested' do
+      let(:fake_response) do
+        double(
+          data: {
+            hits: {
+              hit: [
+                {
+                  id: '1',
+                  fields: nil
+                },
+                {
+                  id: '2',
+                  fields: nil
+                }
+              ]
+            }
+          },
+          facets: facets
+        )
+      end
+      it { expect(result.length).to eq(2) }
+      it do
+        expect(result[0].attributes).to eq(
+          'id' => '1'
+        )
+      end
+      it do
+        expect(result[1].attributes).to eq(
+          'id' => '2'
+        )
+      end
+      it { expect(result.facets).to eq(facets) }
     end
-    it { expect(result.facets).to eq(facets) }
   end
 end
