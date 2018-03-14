@@ -1,3 +1,9 @@
+## [2.6.1](https://github.com/tsuwatch/nazrin/compare/v2.6.0...v2.6.1)
+
+### Fixes:
+
+* Fix struct data accessor for `_no_fields` requests [#29](https://github.com/tsuwatch/nazrin/pull/29) - [@AMHOL](https://github.com/AMHOL)
+
 ## [2.6.0](https://github.com/tsuwatch/nazrin/compare/v2.5.0...v2.6.0)
 
 ### Features:
