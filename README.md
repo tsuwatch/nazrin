@@ -108,7 +108,7 @@ Currently supported libraries
 When there is no instance for development and you don't want to request to CloudSearch
 
 ```ruby
-Nazrion.config.mode = 'sandbox'
+Nazrin.config.mode = 'sandbox'
 ```
 
 "sandbox" mode where it does nothing with any requests and just returns an empty collection for any searches.
