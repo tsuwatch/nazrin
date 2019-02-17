@@ -85,7 +85,12 @@ class User
 end
 
 ActiveRecord::Migration.verbose = false
-ActiveRecord::Migrator.migrate File.expand_path('../db/migrate', __FILE__), nil
+if ActiveRecord.version >= Gem::Version.create('5.2.0')
+  ActiveRecord::Migrator.migrations_paths = File.expand_path('db/migrate', __dir__)
+  ActiveRecord::Tasks::DatabaseTasks.migrate
+else
+  ActiveRecord::Migrator.migrate File.expand_path('../db/migrate', __FILE__), nil
+end
 
 require 'database_cleaner'
 
