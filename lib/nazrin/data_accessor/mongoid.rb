@@ -4,7 +4,7 @@ module Nazrin
       def load_all(ids)
         documents_table = {}
         options.each do |k, v|
-          model = if v.nil?
+          @model = if v.nil?
                      model.send(k)
                    else
                      model.send(k, v)

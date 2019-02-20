@@ -22,5 +22,9 @@ describe 'Nazrin::DataAccessor::Mongoid' do
       it { expect(User.search.size(1).start(0).execute).to eq [user] }
       it { expect(User.search.size(1).start(0).execute.facets).to eq(response.facets) }
     end
+
+    context 'with options' do
+      it { expect(User.search({in: {email: ['example@example.com']}}).size(1).start(0).execute).to eq [user] }
+    end
   end
 end
