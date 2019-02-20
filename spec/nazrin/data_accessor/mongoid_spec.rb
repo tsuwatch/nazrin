@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Nazrin::DataAccessor::Mongoid do
+describe 'Nazrin::DataAccessor::Mongoid' do
   let!(:user) { User.create(email: 'example@example.com', created_at: Time.now) }
 
   it { expect(User).to be_respond_to :search }
