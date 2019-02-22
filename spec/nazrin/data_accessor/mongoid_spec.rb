@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Nazrin::DataAccessor::Mongoid do
+describe 'Nazrin::DataAccessor::Mongoid' do
   let!(:user) { User.create(email: 'example@example.com', created_at: Time.now) }
 
   it { expect(User).to be_respond_to :search }
@@ -21,6 +21,10 @@ describe Nazrin::DataAccessor::Mongoid do
       let(:response) { FakeResponseWithFacets.new(user._id.to_s) }
       it { expect(User.search.size(1).start(0).execute).to eq [user] }
       it { expect(User.search.size(1).start(0).execute.facets).to eq(response.facets) }
+    end
+
+    context 'with options' do
+      it { expect(User.search({in: {email: ['example@example.com']}}).size(1).start(0).execute).to eq [user] }
     end
   end
 end

@@ -5,7 +5,7 @@ module Nazrin
       def load_all(ids)
         records_table = {}
         options.each do |k, v|
-          model = model.send(k, v)
+          @model = model.send(k, v)
         end
         model.where(id: ids).each do |record|
           records_table[record.id] = record

@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Nazrin::DataAccessor::Struct do
+describe 'Nazrin::DataAccessor::Struct' do
   let(:clazz) do
     Class.new do
       def self.name; 'CustomStruct'; end
