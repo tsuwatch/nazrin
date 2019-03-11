@@ -67,6 +67,7 @@ describe 'Nazrin::DataAccessor::Struct' do
 
     it do
       expect(Aws::CloudSearch::Client).to receive(:new).with(
+        region: Nazrin.config.region,
         access_key_id: Nazrin.config.access_key_id,
         secret_access_key: Nazrin.config.secret_access_key,
         logger: Nazrin.config.logger
