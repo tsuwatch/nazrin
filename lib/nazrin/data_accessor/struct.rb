@@ -45,6 +45,7 @@ module Nazrin
 
         def cloudsearch_client
           @cloudsearch_client ||= Aws::CloudSearch::Client.new(
+            region: config.region,
             access_key_id: config.access_key_id,
             secret_access_key: config.secret_access_key,
             logger: config.logger
