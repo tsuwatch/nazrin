@@ -8,7 +8,7 @@ module Nazrin
           rel.send(*send_args.compact)
         end
 
-        model.where('_id' => { '$in' => ids }).each do |document|
+        relation.where('_id' => { '$in' => ids }).each do |document|
           documents_table[document._id.to_s] = document
         end
 
