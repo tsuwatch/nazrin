@@ -12,9 +12,7 @@ module Nazrin
           documents_table[document._id.to_s] = document
         end
 
-        ids.map do |id|
-          documents_table[id]
-        end.reject(&:nil?)
+        documents_table.values_at(*ids.map(&:to_s)).compact
       end
 
       def data_from_response(res)

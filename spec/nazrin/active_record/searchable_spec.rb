@@ -93,6 +93,17 @@ describe Nazrin::Searchable do
     it { expect(Post.search.is_a?(Nazrin::SearchClient)).to eq true }
     it { expect(Post.search.data_accessor.is_a?(Nazrin::DataAccessor::ActiveRecord)).to eq true }
 
+    context 'with search options' do
+      let!(:other_post) { Post.create(content: '', created_at: Time.now) }
+
+      subject!(:result) do
+        Post.search(where: 'LENGTH(content) != 0').size(10).start(0).execute
+      end
+
+      it { expect(result).to contain_exactly(post) }
+      it { expect(result.facets).to be_nil }
+    end
+
     context 'without facets' do
       it { expect(Post.search.size(1).start(0).execute).to eq [post] }
       it { expect(Post.search.size(1).start(0).execute.facets).to be_nil }
