@@ -1,4 +1,5 @@
 require 'spec_helper'
+require 'nazrin/data_accessor/struct/attribute_transformer'
 
 describe Nazrin::Searchable do
   let(:clazz) do
@@ -41,7 +42,9 @@ describe Nazrin::Searchable do
     end
 
     before do
-      allow(data_accessor).to receive(:field_types).and_return(
+      allow_any_instance_of(
+        Nazrin::DataAccessor::Struct::AttributeTransformer
+      ).to receive(:field_types).and_return(
         'id' => 'int',
         'content' => 'text',
         'created_at' => 'date'
@@ -147,7 +150,9 @@ describe Nazrin::Searchable do
     end
 
     before do
-      allow(data_accessor).to receive(:field_types).and_return(
+      allow_any_instance_of(
+        Nazrin::DataAccessor::Struct::AttributeTransformer
+      ).to receive(:field_types).and_return(
         'id' => 'int',
         'name' => 'text',
         'tags' => 'literal-array'
