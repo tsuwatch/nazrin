@@ -1,4 +1,4 @@
-require 'aws-sdk-cloudsearch'
+require 'nazrin/data_accessor/struct/attribute_transformer'
 
 module Nazrin
   class DataAccessor
@@ -14,42 +14,14 @@ module Nazrin
           end
         end
 
-        def transform_attributes(attributes)
-          attributes.each_with_object({}) do |(name, value), hash|
-            type = field_types[name]
+        def attribute_transformer
+          return @attribute_transformer if defined?(@attribute_transformer)
 
-            if type.end_with?('array')
-              hash[name] = value
-            else
-              hash[name] = value.first
-            end
+          if config.attribute_transformer
+            @attribute_transformer = config.attribute_transformer
+          else
+            @attribute_transformer = AttributeTransformer.new(config)
           end
-        end
-
-        def field_types
-          return @field_types if defined?(@field_types)
-
-          response = cloudsearch_client.describe_index_fields(
-            domain_name: config.domain_name
-          )
-
-          @field_types = response.index_fields.each_with_object({}) do |field, fields|
-            name = field.options[:index_field_name]
-            type = field.options[:index_field_type]
-
-            fields[name] = type
-          end
-        end
-
-        private
-
-        def cloudsearch_client
-          @cloudsearch_client ||= Aws::CloudSearch::Client.new(
-            region: config.region,
-            access_key_id: config.access_key_id,
-            secret_access_key: config.secret_access_key,
-            logger: config.logger
-          )
         end
       end
 
@@ -61,7 +33,7 @@ module Nazrin
 
       def data_from_response(res)
         res.data[:hits][:hit].map do |hit|
-          self.class.transform_attributes(
+          self.class.attribute_transformer.call(
             { 'id' => hit[:id] }.merge(hit[:fields] || {})
           )
         end
