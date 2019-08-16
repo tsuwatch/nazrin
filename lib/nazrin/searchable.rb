@@ -1,4 +1,5 @@
 require 'active_support/concern'
+require 'active_support/core_ext/module/aliasing'
 
 module Nazrin
   module Searchable
@@ -10,6 +11,9 @@ module Nazrin
       alias_method :delete_from_index, :nazrin_delete_from_index unless method_defined? :delete_from_index
       alias_method :add_to_index, :nazrin_add_to_index unless method_defined? :add_to_index
       alias_method :update_in_index, :nazrin_update_in_index unless method_defined? :update_in_index
+
+      attr_accessor :nazrin_highlights
+      alias_attribute :highlights, :nazrin_highlights unless method_defined? :highlights
     end
 
     def nazrin_delete_from_index
