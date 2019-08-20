@@ -43,6 +43,10 @@ class FakeResponse
   def facets
     nil
   end
+
+  def highlights
+    nil
+  end
 end
 
 class FakeResponseWithFacets < FakeResponse
