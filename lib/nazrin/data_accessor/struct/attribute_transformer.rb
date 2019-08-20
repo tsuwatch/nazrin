@@ -21,7 +21,7 @@ module Nazrin
           attributes.each_with_object({}) do |(name, value), hash|
             type = field_types[name]
 
-            if type.end_with?('array')
+            if type.nil? || type.end_with?('array')
               hash[name] = value
             else
               hash[name] = value.first
