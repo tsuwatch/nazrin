@@ -13,6 +13,7 @@ Gem::Specification.new do |spec|
   spec.description   = 'Ruby wrapper for Amazon CloudSearch (aws-sdk), with ActiveRecord, Mongoid support for easy integration with your Rails application'
   spec.homepage      = 'https://github.com/tsuwatch/nazrin'
   spec.license       = 'MIT'
+  spec.required_ruby_version = Gem::Requirement.new('>= 2.4.0')
 
   spec.files         = `git ls-files -z`.split("\x0").reject { |f| f.match(%r{^(test|spec|features)/}) }
   spec.require_paths = ['lib']
