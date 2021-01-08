@@ -80,7 +80,8 @@ module Nazrin
 
       Result.new(
         records,
-        res.facets
+        res.facets,
+        res.data.hits.hit.map { |hit| hit.highlights }
       )
     end
 
