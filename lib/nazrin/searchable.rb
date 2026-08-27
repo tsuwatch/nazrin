@@ -42,10 +42,11 @@ module Nazrin
         client
       end
 
-      def nazrin_searchable(&block)
+      def nazrin_searchable(key = :id, &block)
         class_variable_set(
           :@@nazrin_doc_client,
           Nazrin::DocumentClient.new(nazrin_searchable_config))
+        class_variable_set(:@@nazrin_doc_id, key)
         class_variable_set(:@@nazrin_search_field_data, {})
         block.call
       end
@@ -55,11 +56,11 @@ module Nazrin
           case type.to_sym
           when :add
             hash[:add] = objects.map do |obj|
-              [obj.send(:id), nazrin_eval_field_data(obj)]
+              [obj.send(nazrin_doc_id), nazrin_eval_field_data(obj)]
             end
           when :delete
             hash[:delete] = objects.map do |obj|
-              obj.send(:id)
+              obj.send(nazrin_doc_id)
             end
           else
             raise(
@@ -90,6 +91,10 @@ module Nazrin
         class_variable_get(:@@nazrin_doc_client)
       end
 
+      def nazrin_doc_id
+        class_variable_get(:@@nazrin_doc_id)
+      end
+
       def nazrin_eval_field_data(obj)
         data = {}
         class_variable_get(
@@ -103,7 +108,7 @@ module Nazrin
 
       def nazrin_add_document(obj)
         nazrin_doc_client.add_document(
-          obj.send(:id), nazrin_eval_field_data(obj))
+          obj.send(nazrin_doc_id), nazrin_eval_field_data(obj))
       end
 
       def nazrin_update_document(obj)
@@ -111,7 +116,7 @@ module Nazrin
       end
 
       def nazrin_delete_document(obj)
-        nazrin_doc_client.delete_document(obj.send(:id))
+        nazrin_doc_client.delete_document(obj.send(nazrin_doc_id))
       end
 
       def nazrin_searchable_config

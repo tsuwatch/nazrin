@@ -77,6 +77,15 @@ class Post < ActiveRecord::Base
   end
 end
 
+class Article < ActiveRecord::Base
+  include Nazrin::Searchable
+
+  searchable(:slug) do
+    fields [:content]
+    field(:created_at) { created_at.utc.iso8601 }
+  end
+end
+
 ENV['MONGOID_ENV'] = 'test'
 Mongoid.load!('./spec/config/mongoid.yml')
 
