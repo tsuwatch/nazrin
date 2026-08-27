@@ -3,10 +3,20 @@ require 'spec_helper'
 describe Nazrin::SearchClient do
   let(:search_client) { described_class.new }
 
-  before { search_client.data_accessor = Nazrin::ActiveRecord::DataAccessor.new(Post, {}) }
+  before { search_client.data_accessor = Nazrin::DataAccessor::ActiveRecord.new(Post, {}) }
 
+  it { expect(search_client).to be_respond_to :client }
   it { expect(search_client).to be_respond_to :parameters }
   it { expect(search_client).to be_respond_to :data_accessor }
+
+  context 'with logger configured' do
+    let(:logger) { instance_double(Logger) }
+    before { Nazrin.config.logger = logger }
+    after { Nazrin.config.logger = nil }
+    it 'sets the client logger' do
+      expect(described_class.new.client.config.logger).to eq(logger)
+    end
+  end
 
   describe '#execute' do
     before { allow_any_instance_of(Aws::CloudSearchDomain::Client).to receive(:search).and_return(FakeResponse.new) }
@@ -18,7 +28,7 @@ describe Nazrin::SearchClient do
 
     context 'config.mode = \'production\'' do
       before { Nazrin.config.mode = 'production' }
-      it { expect(search_client.execute.is_a?(Array)).to eq true }
+      it { expect(search_client.execute.is_a?(Nazrin::PaginatedArray)).to eq false }
     end
   end
 

@@ -18,5 +18,6 @@ module Nazrin
     config_accessor :region
     config_accessor :access_key_id
     config_accessor :secret_access_key
+    config_accessor :logger
   end
 end

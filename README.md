@@ -4,7 +4,7 @@
 [![Coverage Status](https://coveralls.io/repos/tsuwatch/nazrin/badge.svg?branch=readme&service=github)](https://coveralls.io/github/tsuwatch/nazrin?branch=readme)
 [![Code Climate](https://codeclimate.com/github/tsuwatch/nazrin/badges/gpa.svg)](https://codeclimate.com/github/tsuwatch/nazrin)
 
-Nazrin is a Ruby wrapper for Amazon CloudSearch (aws-sdk), with optional ActiveRecord support for easy integration with your Rails application.
+Nazrin is a Ruby wrapper for Amazon CloudSearch (aws-sdk), with ActiveRecord, Mongoid support for easy integration with your Rails application.
 
 >*Nazrin has the ability of the extent which find what you're looking for...*
 
@@ -39,12 +39,23 @@ Nazrin.configure do |config|
   config.region = ''
   config.access_key_id = ''
   config.secret_access_key = ''
+  config.logger = nil
 end
 ```
 
 ```ruby
 class Post < ActiveRecord::Base
-  include Nazrin::ActiveRecord::Searchable
+  include Nazrin::Searchable
+
+  # You can override settings
+  searchable_configure do |config|
+    config.search_endpoint = 'http://example.com/override-search-endpoint'
+    config.document_endpoint = 'http://example.com/override-document-endpoint'
+
+    # If you set domain_name, CloudSearch data using index_fields configured for the search domain is loaded, not a database.
+    # So you can use nazrin for plain object
+    config.domain_name = 'my-cloudsearch-domain-name'
+  end
 
   searchable do
     fields [:content]
@@ -57,15 +68,34 @@ class Post < ActiveRecord::Base
 end
 ```
 
+### `.search`
 ```ruby
-Post.search(where: :foo, includes: :bar).size(1).start(0).query("(and 'content')").query_parser('structured').execute
+result = Post.search(where: :foo, includes: :bar).size(1).start(0).query("(and 'content')").query_parser('structured').execute
 => [#<Post id: 1, content: "content">]
+# You can access facets
+result.facets
+=> {}
 ```
+
+### `.batch_operation`
+```ruby
+post1 = Post.create
+post2 = Post.create
+post3 = Post.create
+post3.destroy
+
+Post.batch_operation(
+  add: [post1, post2],
+  delete: [post3]
+)
+```
+
 
 ### Supported pagination libraries
 If you want to use other supported pagination libraries, for example, `nazrin-kaminari` generates `Kaminari::PaginatableArray` instead of `Nazrin::PaginatedArray`.
 
 ```ruby
+gem 'nazrin'
 gem 'nazrin-kaminari'
 ```
 
@@ -78,7 +108,7 @@ Currently supported libraries
 When there is no instance for development and you don't want to request to CloudSearch
 
 ```ruby
-Nazrion.config.mode = 'sandbox'
+Nazrin.config.mode = 'sandbox'
 ```
 
 "sandbox" mode where it does nothing with any requests and just returns an empty collection for any searches.

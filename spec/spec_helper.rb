@@ -3,21 +3,27 @@ $LOAD_PATH.unshift File.expand_path('../../lib', __FILE__)
 require 'coveralls'
 Coveralls.wear!
 
-require 'aws-sdk'
 require 'active_record'
+require 'mongoid'
 require 'nazrin'
 
 Nazrin.configure do |config|
   config.debug_mode = false
   config.mode = 'production'
-  config.search_endpoint = 'http://search'
-  config.document_endpoint = 'http://document'
-  config.region = :region
-  config.access_key_id = :access_key_id
-  config.secret_access_key = :secret_access_key
+  config.search_endpoint = 'http://search.com'
+  config.document_endpoint = 'http://document.com'
+  config.region = 'region'
+  config.access_key_id = 'access_key_id'
+  config.secret_access_key = 'secret_access_key'
 end
 
 class FakeResponse
+  attr_accessor :id
+
+  def initialize(id = 1)
+    self.id = id
+  end
+
   def data
     self
   end
@@ -30,12 +36,31 @@ class FakeResponse
     [self]
   end
 
-  def id
+  def found
     1
   end
 
-  def found
-    1
+  def facets
+    nil
+  end
+
+  def highlights
+    nil
+  end
+end
+
+class FakeResponseWithFacets < FakeResponse
+  def facets
+    {
+      'status' => {
+        'buckets' => [
+          {
+            'value' => 'active',
+            'count' => 1
+          }
+        ]
+      }
+    }
   end
 end
 
@@ -44,7 +69,7 @@ ActiveRecord::Base.establish_connection(
   database: ':memory:')
 
 class Post < ActiveRecord::Base
-  include Nazrin::ActiveRecord::Searchable
+  include Nazrin::Searchable
 
   searchable do
     fields [:content]
@@ -52,8 +77,24 @@ class Post < ActiveRecord::Base
   end
 end
 
+ENV['MONGOID_ENV'] = 'test'
+Mongoid.load!('./spec/config/mongoid.yml')
+
+class User
+  include Mongoid::Document
+  include Nazrin::Searchable
+
+  field :email, type: String
+  field :created_at, type: DateTime
+end
+
 ActiveRecord::Migration.verbose = false
-ActiveRecord::Migrator.migrate File.expand_path('../db/migrate', __FILE__), nil
+if ActiveRecord.version >= Gem::Version.create('5.2.0')
+  ActiveRecord::Migrator.migrations_paths = File.expand_path('db/migrate', __dir__)
+  ActiveRecord::Tasks::DatabaseTasks.migrate
+else
+  ActiveRecord::Migrator.migrate File.expand_path('../db/migrate', __FILE__), nil
+end
 
 require 'database_cleaner'
 
@@ -69,5 +110,6 @@ RSpec.configure do |config|
 
   config.after(:each) do
     DatabaseCleaner.clean
+    Mongoid.purge!
   end
 end

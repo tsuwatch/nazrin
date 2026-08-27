@@ -1,5 +1,8 @@
-require 'nazrin/active_record/searchable'
-require 'nazrin/active_record/data_accessor'
+require 'aws-sdk-cloudsearchdomain'
+
+require 'nazrin/searchable'
+require 'nazrin/searchable/config'
+require 'nazrin/data_accessor'
 require 'nazrin/config'
 require 'nazrin/search_client'
 require 'nazrin/document_client'
